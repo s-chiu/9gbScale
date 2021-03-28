@@ -21,6 +21,7 @@ namespace _9gbScale
             return testPage.GetResult();
         }
 
+        //try to split the list into three equal groups
         public static List<List<int>> SplitGroup(List<int> group)
         {
             List<List<int>> newGroups= new List<List<int>>();
@@ -28,14 +29,38 @@ namespace _9gbScale
             List<int> group2 = new List<int>();
             List<int> group3 = new List<int>();
             int count = 0;
-            while (count<group.Count)
+            if ((group.Count % 3) != 1)
             {
-                group1.Add(group[count]);
-                count++;
-                group2.Add(group[count]);
-                count++;
-                group3.Add(group[count]);
-                count++;
+                if (group.Count == 2) //if n=2, then group 3 is empty
+                {
+                    group1.Add(group[count]);
+                    group2.Add(group[count++]);
+                }
+                else
+                {
+                    while (count < group.Count) //if 0 remainders, its evenly split, but if n>2 and there is a remainder of 2, then group 3 will have 1 less bar
+                    {
+                        group1.Add(group[count]);
+                        count++;
+                        group2.Add(group[count]);
+                        count++;
+                        group3.Add(group[count]);
+                        count++;
+                    }
+                }
+            }
+            else
+            {
+                while (count < group.Count-2) //if there is a remainder of 1, then group 3 has 1 extra bar
+                {
+                    group1.Add(group[count]);
+                    count++;
+                    group2.Add(group[count]);
+                    count++;
+                    group3.Add(group[count]);
+                    count++;
+                }
+                group3.Add(group[group.Count - 1]);
             }
             newGroups.Add(group1);
             newGroups.Add(group2);
@@ -109,6 +134,8 @@ namespace _9gbScale
         public static void Main()
         {
             StartDriver();
+            Console.WriteLine(4 % 3);
+            Console.WriteLine(5 % 3);
             Console.WriteLine("Enter any key to start");
             Console.ReadLine();
             testPage = new TestPage(webDriver);
