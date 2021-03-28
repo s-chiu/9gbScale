@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using OpenQA.Selenium;
@@ -28,7 +29,7 @@ namespace _9gbScale
             _browser.ClickElement(_browser.GetElement("//button[text()='Weigh']"));
         }
 
-        public void SetBowls(string side, int[] bars)
+        public void SetBowls(string side, List<int> bars)
         {
             int count = 0;
             foreach(int num in bars)

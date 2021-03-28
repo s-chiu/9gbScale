@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 
 namespace _9gbScale
 {
@@ -13,7 +13,7 @@ namespace _9gbScale
             webDriver = new();
         }
 
-        public static string WeighBars(int[] leftBowl, int[] rightBowl)
+        public static string WeighBars(List<int> leftBowl, List<int> rightBowl)
         {
             testPage.SetBowls("left", leftBowl);
             testPage.SetBowls("right", rightBowl);
@@ -21,10 +21,31 @@ namespace _9gbScale
             return testPage.GetResult();
         }
 
+        public static List<List<int>> SplitGroup(List<int> group)
+        {
+            List<List<int>> newGroups= new List<List<int>>();
+            List<int> group1 = new List<int>();
+            List<int> group2 = new List<int>();
+            List<int> group3 = new List<int>();
+            int count = 0;
+            while (count<group.Count)
+            {
+                group1.Add(group[count]);
+                count++;
+                group2.Add(group[count]);
+                count++;
+                group3.Add(group[count]);
+                count++;
+            }
+            newGroups.Add(group1);
+            newGroups.Add(group2);
+            newGroups.Add(group3);
+            return newGroups;
+        }
         //since there are 9 bars, splitting them into three groups of three and weighing two pairs will determine which group has the fake bar
         //it will then compare two numbers of that one group to find the fake
         //this will always result in 2 iterations
-        public static string FindFakeBar(int[] group1, int[] group2, int[] group3)
+        public static string FindFakeBar(List<int> group1, List<int> group2, List<int> group3)
         {
             if(!fakeBar.Equals(""))
              {
@@ -34,39 +55,33 @@ namespace _9gbScale
             switch (WeighBars(group1, group2))
              {
                 case "=":
-                    if (group3.Length > 1)
+                    if (group3.Count > 1)
                     {
-                        int[] newGroup1 = { group3[0] };
-                        int[] newGroup2 = { group3[1] };
-                        int[] newGroup3 = { group3[2] };
-                        FindFakeBar(newGroup1,newGroup2,newGroup3);
+                        List<List<int>> newGroup = SplitGroup(group3);
+                        FindFakeBar(newGroup[0],newGroup[1],newGroup[2]);
                     }
                     else
                         fakeBar= group3[0].ToString();
                         break;
 
                 case ">":
-                    if (group2.Length > 1)
+                    if (group2.Count > 1)
                     {
-                        int[] newGroup1 = { group2[0] };
-                        int[] newGroup2 = { group2[1] };
-                        int[] newGroup3 = { group2[2] };
-                        FindFakeBar(newGroup1, newGroup2, newGroup3);
+                        List<List<int>> newGroup = SplitGroup(group2);
+                        FindFakeBar(newGroup[0], newGroup[1], newGroup[2]);
                     }
                     else
-                        fakeBar = group2.GetValue(0).ToString();
-                        break;
+                        fakeBar = group2[0].ToString();
+                    break;
                 case "<":
-                    if (group1.Length > 1)
+                    if (group1.Count > 1)
                     {
-                        int[] newGroup1 = { group1[0] };
-                        int[] newGroup2 = { group1[1] };
-                        int[] newGroup3 = { group1[2] };
-                        FindFakeBar(newGroup1, newGroup2, newGroup3);
+                        List<List<int>> newGroup = SplitGroup(group1);
+                        FindFakeBar(newGroup[0], newGroup[1], newGroup[2]);
                     }
                     else
-                        fakeBar = group1.GetValue(0).ToString();
-                        break;
+                        fakeBar = group1[0].ToString();
+                    break;
                 default:
                     throw new Exception("Something bad happened");
             }
@@ -105,10 +120,10 @@ namespace _9gbScale
                 {
                     fakeBar = "";
                 }
-                int[] group1 = { 0, 1, 2 };
-                int[] group2 = { 3, 4, 5 };
-                int[] group3 = { 6, 7, 8 };
-                string fake = FindFakeBar(group1, group2, group3);
+                List<int> originalGroup = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+                List<List<int>> splitGroups = SplitGroup(originalGroup);
+
+                string fake = FindFakeBar(splitGroups[0], splitGroups[1], splitGroups[2]);
                 Console.WriteLine("The fake is " + fake);
                 SelectAnswer(fake);
                 PrintWeighings();
