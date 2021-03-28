@@ -51,7 +51,7 @@ namespace _9gbScale
             }
             else
             {
-                while (count < group.Count-2) //if there is a remainder of 1, then group 3 has 1 extra bar
+                while (count < group.Count-1) //if there is a remainder of 1, then group 3 has 1 extra bar
                 {
                     group1.Add(group[count]);
                     count++;
