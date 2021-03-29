@@ -45,25 +45,22 @@ namespace _9gbScale
             }
             else
             {
-                while (count < group.Count-1) //if there is a remainder of 1, then group 3 has 1 extra bar
+                while (count < group.Count) //if there is a remainder of 1, then group 3 has 1 extra bar
                 {
-                    group1.Add(group[count]);
+                    group3.Add(group[count]);
                     count++;
                     group2.Add(group[count]);
                     count++;
-                    group3.Add(group[count]);
+                    group1.Add(group[count]);
                     count++;
                 }
-                group3.Add(group[group.Count - 1]);
             }
             newGroups.Add(group1);
             newGroups.Add(group2);
             newGroups.Add(group3);
             return newGroups;
         }
-        //since there are 9 bars, splitting them into three groups of three and weighing two pairs will determine which group has the fake bar
-        //it will then compare two numbers of that one group to find the fake
-        //this will always result in 2 iterations
+        //splitting bars into three groups of three and weighing two pairs will determine which group has the fake bar
         public static string FindFakeBar(List<int> group1, List<int> group2, List<int> group3)
         {
             if(!fakeBar.Equals(""))
@@ -128,8 +125,6 @@ namespace _9gbScale
         public static void Main()
         {
             StartDriver();
-            Console.WriteLine(4 % 3);
-            Console.WriteLine(5 % 3);
             Console.WriteLine("Enter any key to start");
             Console.ReadLine();
             testPage = new TestPage(webDriver);
