@@ -31,17 +31,15 @@ namespace _9gbScale
             int count = 0;
             if ((group.Count % 3) != 1)
             {
+                while (count < group.Count) //if 0 remainders, its evenly split, but there is a remainder of 2, then group 3 will have 1 less bar
                 {
-                    while (count < group.Count) //if 0 remainders, its evenly split, but there is a remainder of 2, then group 3 will have 1 less bar
-                    {
-                        group1.Add(group[count]);
-                        count++;
-                        group2.Add(group[count]);
-                        count++;
-                        group3.Add(group[count]);
-                        count++;
+                    group1.Add(group[count]);
+                    count++;
+                    group2.Add(group[count]);
+                    count++;
+                    group3.Add(group[count]);
+                    count++;
                     }
-                }
             }
             else
             {
